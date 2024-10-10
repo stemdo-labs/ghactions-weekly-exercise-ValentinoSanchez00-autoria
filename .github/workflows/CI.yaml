@@ -1,9 +1,7 @@
 name: CI
 on:
-  push:
-    branches:
-      - development
-
+  workflow_call:
+    
 jobs:
   build:
     name: build angular project
@@ -19,7 +17,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     needs: build
-    environment: production
+    environment: development
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -30,8 +28,6 @@ jobs:
               NAME=$(node -p "require('./package.json').name")
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "NAME=$NAME" >> $GITHUB_ENV
-
-
       - name: crear tag
         uses: ./.github/actions/actiondockerpush
         with:
@@ -41,8 +37,11 @@ jobs:
           docker_password: ${{ secrets.PASSWORD }}
 
       - name: Echo full image tags from action
-        run: echo " ${{ env.full_image_tags }}"
-      
+        run: |
+         echo " ${{ env.full_image_tags }}"
+         echo " ${{ secrets.USERNAME }}"  
+         echo " ${{ secrets.PASSWORD }}"
+
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -55,5 +54,3 @@ jobs:
           
       - name: Push Docker image to DockerHub
         run: docker push ${{ env.full_image_tags }}
-      
-    

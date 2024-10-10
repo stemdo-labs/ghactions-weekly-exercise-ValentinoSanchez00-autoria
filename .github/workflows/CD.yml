@@ -1,14 +1,6 @@
 name: CD
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
-
+ workflow_call:
 jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
@@ -19,22 +11,20 @@ jobs:
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-      - name: Generate tag
-        uses: ./.github/actions/actiondockerpush
-        with:
-          image_name: '${{ env.NAME }}'
-          version: '${{ env.VERSION }}'
-          docker_username: ${{ secrets.USERNAME }}
-          docker_password: ${{ secrets.PASSWORD }}
       - name: Pull Dockerfile
         run: |
-          docker pull ${{ env.full_image_tags }}
+         docker pull vsanchezr33/sample-angular-app:0.0.1
       - name: Run Docker container
         run: |
-          docker run -d --name angular_aplication -p 80:80 ${{ env.full_image_tags }}
-      - name: Wait 10 seconds for container to start 
-        run: sleep 10
+          docker run -d --name angular_aplication -p 80:8080 vsanchezr33/sample-angular-app:0.0.1
+
+      - name: Wait 30 seconds for container to start 
+        run: sleep 30
+      - name: Docker ps
+        run: |
+          docker ps
+
       - name: Curl the deployed application
         run: |
-          curl -I http://localhost:80  
+          curl -I http://localhost:80
         
