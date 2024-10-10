@@ -23,13 +23,21 @@ jobs:
     environment: production
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Create Docker image
-        run: docker build . -t ValentinoSanchez00/semanal:latest
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t ValentinoSanchez00/semanal:latest .
 
       - name: Login to DockerHub
-        run: echo ${{ secrets.PASSWORD }} | docker login -u ${{ secrets.USERNAME }} --password-stdin
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
 
       - name: Push Docker image to DockerHub
-        run: docker push ValentinoSanchez00/semanal:latest
+        uses: ./.github/actions/actiondockerpush
+        with:
+          image_name: 'ValentinoSanchez00/semanal'
+          version: '1.0.0'
+          docker_username: ${{ secrets.USERNAME }}
+          docker_password: ${{ secrets.PASSWORD }}

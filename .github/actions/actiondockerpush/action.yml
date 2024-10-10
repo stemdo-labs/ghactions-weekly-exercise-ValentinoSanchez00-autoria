@@ -1,0 +1,25 @@
+name: Docker Push Action
+description: "Push Docker image to DockerHub"
+inputs:
+  image_name:
+    description: "The Docker image name"
+    required: true
+  version:
+    description: "Version tag for the Docker image"
+    required: true
+  docker_username:
+    description: "DockerHub username"
+    required: true
+  docker_password:
+    description: "DockerHub password"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Tag Docker image
+      run: docker tag ${{ inputs.image_name }}:$${{ inputs.version }} ${{ inputs.image_name }}:latest
+      shell: bash
+
+    - name: Push Docker image to DockerHub
+      run: docker push ${{ inputs.image_name }}:latest
+      shell: bash
