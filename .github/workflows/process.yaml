@@ -14,4 +14,4 @@ jobs:
     uses: ./.github/workflows/CI.yaml
   CD:
     needs: CI
-    uses: ./.github/workflows/CD.yaml
+    uses: ./.github/workflows/CD.yml

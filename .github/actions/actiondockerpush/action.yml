@@ -13,6 +13,7 @@ inputs:
   docker_password:
     description: "DockerHub password"
     required: true
+
 outputs:
   full_image_tags:
     description: "The full Docker image tag with version"
