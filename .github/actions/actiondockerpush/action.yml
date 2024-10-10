@@ -16,6 +16,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: echo vars
+      run: |
+        echo ${{ inputs.image_name }}
+        echo ${{ inputs.version }}
+      shell: bash
+
     - name: Tag Docker image
       run: docker tag ${{ inputs.image_name }}:$${{ inputs.version }} ${{ inputs.image_name }}:latest
       shell: bash
