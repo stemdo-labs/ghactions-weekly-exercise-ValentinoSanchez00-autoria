@@ -23,7 +23,7 @@ runs:
       shell: bash
 
     - name: Tag Docker image
-      run: docker tag ${{ inputs.image_name }}:$${{ inputs.version }} ${{ inputs.image_name }}:latest
+      run: docker tag ${{ inputs.image_name }}:${{ inputs.version }} ${{ inputs.image_name }}:latest
       shell: bash
 
     - name: Push Docker image to DockerHub
