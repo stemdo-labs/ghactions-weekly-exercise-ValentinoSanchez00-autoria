@@ -1,0 +1,59 @@
+name: CI
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    name: build angular project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+
+  job1:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Coger variables de package.json
+        run: |
+              VERSION=$(node -p "require('./package.json').version")
+              NAME=$(node -p "require('./package.json').name")
+              echo "VERSION=$VERSION" >> $GITHUB_ENV
+              echo "NAME=$NAME" >> $GITHUB_ENV
+
+
+      - name: crear tag
+        uses: ./.github/actions/actiondockerpush
+        with:
+          image_name: '${{ env.NAME }}'
+          version: '${{ env.VERSION }}'
+          docker_username: ${{ secrets.USERNAME }}
+          docker_password: ${{ secrets.PASSWORD }}
+
+      - name: Echo full image tags from action
+        run: echo " ${{ env.full_image_tags }}"
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.full_image_tags }} .
+
+          
+      - name: Push Docker image to DockerHub
+        run: docker push ${{ env.full_image_tags }}
+      
+    
