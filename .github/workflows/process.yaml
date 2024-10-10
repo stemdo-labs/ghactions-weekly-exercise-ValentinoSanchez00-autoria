@@ -1,0 +1,17 @@
+name: semanal1
+on:
+  push:
+    branches:
+      - development
+      - main
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  CI:
+    if: github.ref == 'refs/heads/development
+    uses: ./.github/workflows/CI.yaml
+  CD:
+    needs: CI
+    uses: ./.github/workflows/CD.yaml
