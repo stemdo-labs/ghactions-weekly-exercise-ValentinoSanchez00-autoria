@@ -13,7 +13,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
       - name: Pull Dockerfile
         run: |
-          docker pull vsanchezr33/sample-angular-app
+         docker pull vsanchezr33/sample-angular-app:0.0.1
       - name: Run Docker container
         run: |
           docker run -d --name angular_aplication -p 80:80 ${{ env.full_image_tags }}
