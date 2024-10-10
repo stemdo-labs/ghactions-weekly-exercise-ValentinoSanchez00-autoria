@@ -22,7 +22,9 @@ jobs:
         run: sleep 20
       - name: execute command
         run: |
-          docker logs angular_aplication
+         docker exec -it angular_aplication ls /usr/share/nginx/html
+         docker exec -it angular_aplication curl http://localhost:80
+
 
 
       - name: Curl the deployed application
