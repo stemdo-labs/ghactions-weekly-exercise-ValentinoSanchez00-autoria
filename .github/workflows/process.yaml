@@ -10,7 +10,7 @@ on:
 
 jobs:
   CI:
-    if: github.ref == 'refs/heads/development
+    if: github.ref == 'refs/heads/development'
     uses: ./.github/workflows/CI.yaml
   CD:
     needs: CI
