@@ -33,11 +33,15 @@ jobs:
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
+      - name: Coger variables de package.json
+        run: |
+          echo "VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
+          echo "NAME=$(node -p -e "require('./package.json').name")" >> $GITHUB_ENV
 
       - name: Push Docker image to DockerHub
         uses: ./.github/actions/actiondockerpush
         with:
-          image_name: 'ValentinoSanchez00/semanal'
-          version: '1.0.0'
+          image_name: ' ${{ secrets.USERNAME }}:${{ env.NAME }}'
+          version: ' ${{ env.VERSION }}'
           docker_username: ${{ secrets.USERNAME }}
           docker_password: ${{ secrets.PASSWORD }}
