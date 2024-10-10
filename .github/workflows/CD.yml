@@ -18,12 +18,13 @@ jobs:
         run: |
           docker run -d --name angular_aplication -p 80:80 vsanchezr33/sample-angular-app:0.0.1
 
-      - name: Wait 10 seconds for container to start 
-        run: sleep 20
-      - name: execute command
-        run: |
-         docker exec -it angular_aplication ls /usr/share/nginx/html
+      - name: Wait 30 seconds for container to start 
+        run: sleep 30
 
+      - name: see the logs
+        run: |
+          docker logs angular_aplication
+          
       - name: Curl the deployed application
         run: |
           curl -I http://localhost:80  
