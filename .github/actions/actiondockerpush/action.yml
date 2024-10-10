@@ -16,12 +16,13 @@ inputs:
 outputs:
   full_image_tags:
     description: "Full Docker image tag and latest tag"
-    value: "${{full_tags}}"
+    value: "${{ steps.echo_vars.outputs.full_image_tags }}"
 runs:
   using: "composite"
   steps:
     - name: echo vars
       run: |
         full_tags="${{ inputs.image_name }}:${{ inputs.version }} ${{ inputs.image_name }}:latest"
+        echo "full_image_tags=$full_tags" >> $GITHUB_ENV
         echo "::set-output name=full_image_tags::$full_tags"
       shell: bash
