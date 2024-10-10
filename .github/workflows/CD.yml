@@ -20,11 +20,18 @@ jobs:
 
       - name: Wait 30 seconds for container to start 
         run: sleep 30
+      - name: Docker ps
+        run: |
+          docker ps
+
+      - name: Docker commands
+        run: |
+          docker exec -it angular_aplication ng build --prod
 
       - name: see the logs
         run: |
           docker logs angular_aplication
-          
+
       - name: Curl the deployed application
         run: |
           curl -I http://localhost:80  
