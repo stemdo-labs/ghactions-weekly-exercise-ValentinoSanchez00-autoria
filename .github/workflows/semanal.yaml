@@ -33,7 +33,7 @@ jobs:
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-
+          
       - name: Coger variables de package.json
         run: |
               VERSION=$(node -p "require('./package.json').version")
@@ -50,10 +50,7 @@ jobs:
           docker_username: ${{ secrets.USERNAME }}
           docker_password: ${{ secrets.PASSWORD }}
 
-      - name: Echo full image tags from job1
+      - name: Echo full image tags from action
         run: "echo ${{ needs.job1.outputs.full_image_tags }}"
-      - name: Tag Docker image
-        run: docker tag ${{ env.NAME }}:${{ env.VERSION }} ${{ env.NAME }}:latest
-
-      - name: Push Docker image to DockerHub
-        run: docker push ${{ env.NAME }}:latest 
+      
+    
