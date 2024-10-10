@@ -53,4 +53,7 @@ jobs:
       - name: Echo full image tags from action
         run: echo " ${{ env.full_image_tags }}"
       
+      - name: Push Docker image to DockerHub
+        run: docker push ${{ env.full_image_tags }}
+      
     
