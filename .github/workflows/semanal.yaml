@@ -51,6 +51,6 @@ jobs:
           docker_password: ${{ secrets.PASSWORD }}
 
       - name: Echo full image tags from action
-        run: "echo ${{ needs.job1.outputs.full_image_tags }}"
+        run: echo " ${{ env.full_image_tags }}"
       
     

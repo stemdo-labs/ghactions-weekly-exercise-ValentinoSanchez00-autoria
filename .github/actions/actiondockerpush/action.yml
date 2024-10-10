@@ -1,3 +1,4 @@
+# .github/actions/actiondockerpush/action.yml
 name: Docker Push Action
 description: "Push Docker image to DockerHub"
 inputs:
@@ -16,11 +17,13 @@ inputs:
 outputs:
   full_image_tags:
     description: "Full Docker image tag and latest tag"
+    value: "${{ steps.generate_full_image_tags.outputs.full_image_tags }}"
 runs:
   using: "composite"
   steps:
-    - name: echo vars
+    - name: Generate full image tags
+      id: generate_full_image_tags
       run: |
         full_tags="${{ inputs.image_name }}:${{ inputs.version }} ${{ inputs.image_name }}:latest"
-        echo "full_image_tags=$full_tags" >> $GITHUB_ENV
+        echo "full_image_tags=$full_tags" >> $GITHUB_ENV  # Guardar en el entorno
       shell: bash
