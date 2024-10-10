@@ -16,7 +16,8 @@ jobs:
          docker pull vsanchezr33/sample-angular-app:0.0.1
       - name: Run Docker container
         run: |
-          docker run -d --name angular_aplication -p 80:80 ${{ env.full_image_tags }}
+          docker run -d --name angular_aplication -p 80:80 vsanchezr33/sample-angular-app:0.0.1
+
       - name: Wait 10 seconds for container to start 
         run: sleep 10
       - name: Curl the deployed application
