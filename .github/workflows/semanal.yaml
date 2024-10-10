@@ -33,10 +33,10 @@ jobs:
               echo "NAME=$NAME" >> $GITHUB_ENV
 
 
-      - name: Push Docker image to DockerHub
+      - name: crear tag
         uses: ./.github/actions/actiondockerpush
         with:
-          image_name: '${{ secrets.USERNAME }}:${{ env.NAME }}'
+          image_name: '${{ env.NAME }}'
           version: '${{ env.VERSION }}'
           docker_username: ${{ secrets.USERNAME }}
           docker_password: ${{ secrets.PASSWORD }}
