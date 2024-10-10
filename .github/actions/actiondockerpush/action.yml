@@ -1,3 +1,4 @@
+# .github/actions/actiondockerpush/action.yml
 name: Docker Push Action
 description: "Push Docker image to DockerHub"
 inputs:
@@ -13,11 +14,6 @@ inputs:
   docker_password:
     description: "DockerHub password"
     required: true
-
-outputs:
-  full_image_tags:
-    description: "The full Docker image tag with version"
-
 runs:
   using: "composite"
   steps:
@@ -25,6 +21,5 @@ runs:
       id: generate_full_image_tags
       run: |
         full_tags="${{ inputs.docker_username }}/${{ inputs.image_name }}:${{ inputs.version }}"
-        echo "full_image_tags=$full_tags" >> $GITHUB_ENV
-        echo "::set-output name=full_image_tags::$full_tags"
+        echo "full_image_tags=$full_tags" >> $GITHUB_ENV  
       shell: bash

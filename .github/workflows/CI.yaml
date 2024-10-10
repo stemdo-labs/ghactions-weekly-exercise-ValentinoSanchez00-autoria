@@ -40,7 +40,7 @@ jobs:
           docker_password: ${{ secrets.PASSWORD }}
 
       - name: Echo full image tags from action
-        run: echo " ${{ steps.create_tag.outputs.full_image_tags }}"
+        run: echo " ${{ env.full_image_tags }}"
       
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -49,10 +49,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ steps.create_tag.outputs.full_image_tags}} .
+        run: docker build -t ${{ env.full_image_tags }} .
 
           
       - name: Push Docker image to DockerHub
-        run: docker push ${{ steps.create_tag.outputs.full_image_tags }}
+        run: docker push ${{ env.full_image_tags }}
       
     

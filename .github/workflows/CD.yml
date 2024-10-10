@@ -1,9 +1,6 @@
 name: CD
 on:
  workflow_call:
-   
-      
-
 jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
@@ -16,10 +13,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
       - name: Pull Dockerfile
         run: |
-          docker pull ${{ needs.CI.outputs.full_image_tags }}
+          docker pull ${{ env.full_image_tags }}
       - name: Run Docker container
         run: |
-          docker run -d --name angular_aplication -p 80:80 ${{ needs.CI.outputs.full_image_tags }}
+          docker run -d --name angular_aplication -p 80:80 ${{ env.full_image_tags }}
       - name: Wait 10 seconds for container to start 
         run: sleep 10
       - name: Curl the deployed application
