@@ -1,0 +1,23 @@
+name: CI/CD
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+ job1:
+   runs-on: ubuntu-latest
+   if: github.ref == 'refs/heads/main'
+   environment: production
+   steps:
+     - name: Call a reusable workflow
+       uses: ./.github/workflows/actionsBuildAngular.yml #workflow personalizado
+     - name: Create Docker image
+       run: docker build . -t ValentinoSanchez00/semanal:latest #Aqui es el custom action
+     - name: Login to DockerHub with password
+       run: docker login -u {{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }} 
+     - name: Push Docker image on Dockerhub
+       run: docker push ValentinoSanchez00/semanal:latest
+
+
