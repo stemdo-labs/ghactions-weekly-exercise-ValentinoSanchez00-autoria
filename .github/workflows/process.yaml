@@ -12,6 +12,7 @@ jobs:
   CI:
     if: github.ref == 'refs/heads/development'
     uses: ./.github/workflows/CI.yaml
+    secrets: inherit
   CD:
     needs: CI
     uses: ./.github/workflows/CD.yml
