@@ -25,15 +25,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build Docker image
-        run: docker build -t ValentinoSanchez00/semanal:latest .
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          
       - name: Coger variables de package.json
         run: |
               VERSION=$(node -p "require('./package.json').version")
@@ -52,6 +43,17 @@ jobs:
 
       - name: Echo full image tags from action
         run: echo " ${{ env.full_image_tags }}"
+      
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.full_image_tags }} .
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          
       
       - name: Push Docker image to DockerHub
         run: docker push ${{ env.full_image_tags }}

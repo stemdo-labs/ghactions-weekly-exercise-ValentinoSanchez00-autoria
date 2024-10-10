@@ -24,6 +24,6 @@ runs:
     - name: Generate full image tags
       id: generate_full_image_tags
       run: |
-        full_tags="${{ inputs.image_name }}:${{ inputs.version }} ${{ inputs.image_name }}:latest"
+        full_tags="${{ docker_username }}/${{ inputs.image_name }}:${{ inputs.version }}"
         echo "full_image_tags=$full_tags" >> $GITHUB_ENV  # Guardar en el entorno
       shell: bash
