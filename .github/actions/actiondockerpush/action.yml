@@ -13,19 +13,15 @@ inputs:
   docker_password:
     description: "DockerHub password"
     required: true
+outputs:
+  full_image_tags:
+    description: "Full Docker image tag and latest tag"
+    value: "${{full_tags}}"
 runs:
   using: "composite"
   steps:
     - name: echo vars
       run: |
-        echo ${{ inputs.image_name }}
-        echo ${{ inputs.version }}
-      shell: bash
-
-    - name: Tag Docker image
-      run: docker tag ${{ inputs.image_name }}:${{ inputs.version }} ${{ inputs.image_name }}:latest
-      shell: bash
-
-    - name: Push Docker image to DockerHub
-      run: docker push ${{ inputs.image_name }}:latest
+        full_tags="${{ inputs.image_name }}:${{ inputs.version }} ${{ inputs.image_name }}:latest"
+        echo "::set-output name=full_image_tags::$full_tags"
       shell: bash
