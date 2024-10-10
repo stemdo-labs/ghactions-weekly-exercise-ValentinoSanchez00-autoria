@@ -23,9 +23,6 @@ jobs:
       - name: execute command
         run: |
          docker exec -it angular_aplication ls /usr/share/nginx/html
-         docker exec -it angular_aplication curl http://localhost:80
-
-
 
       - name: Curl the deployed application
         run: |
