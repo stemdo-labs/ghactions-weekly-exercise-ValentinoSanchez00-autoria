@@ -2,7 +2,6 @@ name: CI
 on:
   workflow_call:
     
-
 jobs:
   build:
     name: build angular project
@@ -29,8 +28,6 @@ jobs:
               NAME=$(node -p "require('./package.json').name")
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "NAME=$NAME" >> $GITHUB_ENV
-
-
       - name: crear tag
         uses: ./.github/actions/actiondockerpush
         with:
@@ -54,5 +51,3 @@ jobs:
           
       - name: Push Docker image to DockerHub
         run: docker push ${{ env.full_image_tags }}
-      
-    
