@@ -21,7 +21,7 @@ jobs:
     needs: build
     environment: development
     outputs:
-      tag: ${{ steps.tag.outputs.tag }} # Correcta referencia al paso con id 'tag'
+       tag: ${{ env.full_image_tags }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
