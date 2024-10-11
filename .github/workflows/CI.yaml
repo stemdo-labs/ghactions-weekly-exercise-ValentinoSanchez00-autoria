@@ -3,8 +3,7 @@ on:
   workflow_call:
     outputs: 
       tag: ${{ jobs.job1.outputs.tag }}
-      
-    
+
 jobs:
   build:
     name: build angular project
@@ -19,37 +18,37 @@ jobs:
 
   job1:
     runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.tag.outputs.tag }}
     needs: build
     environment: development
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }} # Correcta referencia al paso con id 'tag'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Coger variables de package.json
         run: |
-              VERSION=$(node -p "require('./package.json').version")
-              NAME=$(node -p "require('./package.json').name")
-              echo "VERSION=$VERSION" >> $GITHUB_ENV
-              echo "NAME=$NAME" >> $GITHUB_ENV
+          VERSION=$(node -p "require('./package.json').version")
+          NAME=$(node -p "require('./package.json').name")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "NAME=$NAME" >> $GITHUB_ENV
+
       - name: crear tag
         uses: ./.github/actions/actiondockerpush
         with:
           image_name: '${{ env.NAME }}'
           version: '${{ env.VERSION }}'
           docker_username: ${{ secrets.USERNAME }}
-         
+
+      - name: Set full image tags
+        run: echo "full_image_tags=${{ env.NAME }}:${{ env.VERSION }}" >> $GITHUB_ENV
 
       - name: Echo full image tags from action
-        run: |
-         echo " ${{ env.full_image_tags }}"
-      
+        run: echo "${{ env.full_image_tags }}"
+
       - name: Create a output variable
         id: tag
-        run: |
-          echo "tag=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT
-      
+        run: echo "tag=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -60,6 +59,5 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ env.full_image_tags }} .
 
-          
       - name: Push Docker image to DockerHub
         run: docker push ${{ env.full_image_tags }}
