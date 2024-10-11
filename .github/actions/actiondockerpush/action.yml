@@ -1,22 +1,16 @@
 # .github/actions/actiondockerpush/action.yml
 name: Docker Push Action
-description: "Push Docker image to DockerHub"
-inputs:
-  image_name:
-    description: "The Docker image name"
-    required: true
-  version:
-    description: "Version tag for the Docker image"
-    required: true
-  docker_username:
-    description: "DockerHub username"
-    required: true
-  docker_password:
-    description: "DockerHub password"
-    required: true
+description: "Create tag"
 runs:
   using: "composite"
   steps:
+    - name: Coger variables de package.json
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        NAME=$(node -p "require('./package.json').name")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "NAME=$NAME" >> $GITHUB_ENV
+      shell: bash
     - name: Generate full image tags
       id: generate_full_image_tags
       run: |
