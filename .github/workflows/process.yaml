@@ -13,12 +13,14 @@ jobs:
     if: github.ref == 'refs/heads/development'
     uses: ./.github/workflows/CI.yaml
     secrets: inherit
+
   echo_output:
     needs: CI
     runs-on: ubuntu-latest
     steps:
       - name: Echo output
         run: echo ${{ needs.CI.outputs.tag }}
+        
   CD:
     needs: CI
     uses: ./.github/workflows/CD.yml

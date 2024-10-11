@@ -35,6 +35,7 @@ jobs:
           echo "NAME=$NAME" >> $GITHUB_ENV
 
       - name: crear tag
+        id: create_tag
         uses: ./.github/actions/actiondockerpush
         with:
           image_name: '${{ env.NAME }}'
@@ -43,11 +44,11 @@ jobs:
 
 
       - name: Echo full image tags from action
-        run: echo "${{ env.full_image_tags }}"
+        run: echo "${{ steps.create_tag.outputs.full_image_tags }}"
 
       - name: Create a output variable
         id: tag
-        run: echo "tag=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT 
+        run: echo "tag=${{ steps.create_tag.outputs.full_image_tags }}" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -56,7 +57,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ env.full_image_tags }} .
+        run: docker build -t ${{ steps.create_tag.outputs.full_image_tags }}" .
 
       - name: Push Docker image to DockerHub
         run: docker push ${{ env.full_image_tags }}
