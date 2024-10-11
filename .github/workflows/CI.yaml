@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_call:
     outputs: 
-      tag: ${{ jobs.job1.outputs.tag }}
+      tag: ${{ jobs.job1.outputs.variable }}
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
     needs: build
     environment: development
     outputs:
-       tag: ${{ env.full_image_tags }}
+       variable: ${{ steps.tag.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
