@@ -11,9 +11,10 @@ inputs:
   docker_username:
     description: "DockerHub username"
     required: true
-  docker_password:
-    description: "DockerHub password"
-    required: true
+outputs:
+  full_image_tags:
+    description: "Full image tags"
+    value: ${{ steps.generate_full_image_tags.outputs.full_image_tags }}
 runs:
   using: "composite"
   steps:
@@ -21,5 +22,6 @@ runs:
       id: generate_full_image_tags
       run: |
         full_tags="${{ inputs.docker_username }}/${{ inputs.image_name }}:${{ inputs.version }}"
-        echo "full_image_tags=$full_tags" >> $GITHUB_ENV  
+        echo "full_image_tags=$full_tags" >> $GITHUB_OUTPUT
+          
       shell: bash

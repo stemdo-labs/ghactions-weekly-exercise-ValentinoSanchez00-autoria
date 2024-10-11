@@ -1,11 +1,17 @@
 name: CI
 on:
   workflow_call:
-    
-jobs:
-  build:
-    name: build angular project
+    outputs: 
+      tag: 
+        value: ${{ jobs.job1.outputs.variable }}
+
+jobs:   
+  job1:
     runs-on: ubuntu-latest
+  
+    environment: development
+    outputs:
+       variable: ${{ steps.tag.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -13,37 +19,31 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
-
-  job1:
-    runs-on: ubuntu-latest
-    outputs:
-      image_tags: ${{ env.full_image_tags }}
-    needs: build
-    environment: development
-    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Coger variables de package.json
         run: |
-              VERSION=$(node -p "require('./package.json').version")
-              NAME=$(node -p "require('./package.json').name")
-              echo "VERSION=$VERSION" >> $GITHUB_ENV
-              echo "NAME=$NAME" >> $GITHUB_ENV
+          VERSION=$(node -p "require('./package.json').version")
+          NAME=$(node -p "require('./package.json').name")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "NAME=$NAME" >> $GITHUB_ENV
+
       - name: crear tag
+        id: create_tag
         uses: ./.github/actions/actiondockerpush
         with:
           image_name: '${{ env.NAME }}'
           version: '${{ env.VERSION }}'
           docker_username: ${{ secrets.USERNAME }}
-          docker_password: ${{ secrets.PASSWORD }}
 
-      - name: Set output full_image_tags
-        id: set_output_image_tags
-        run: echo "${{ env.full_image_tags }}" > full_image_tags.txt
-        
-      - name: Save full_image_tags to environment file
-        run: echo "full_image_tags=${{ env.full_image_tags }}" >> $GITHUB_ENV
+
+      - name: Echo full image tags from action
+        run: echo "${{ steps.create_tag.outputs.full_image_tags }}"
+
+      - name: Create a output variable
+        id: tag
+        run: echo "tag=${{ steps.create_tag.outputs.full_image_tags }}" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -52,8 +52,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ env.full_image_tags }} .
+        run: docker build -t ${{ steps.create_tag.outputs.full_image_tags }} .
 
-          
       - name: Push Docker image to DockerHub
-        run: docker push ${{ env.full_image_tags }}
+        run: docker push ${{ steps.create_tag.outputs.full_image_tags }}
