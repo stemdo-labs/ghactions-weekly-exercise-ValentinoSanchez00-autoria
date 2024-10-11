@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     outputs:
-       variable: ${{ steps.tag.outputs.image_name }}
+       image_name: ${{ steps.tag.outputs.image_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
