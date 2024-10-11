@@ -3,15 +3,14 @@ on:
   workflow_call:
     outputs: 
       tag: 
-        value: ${{ jobs.job1.outputs.variable }}
+        value: ${{ jobs.ci.outputs.variable }}
 
 jobs:   
-  job1:
+  ci:
     runs-on: ubuntu-latest
-  
     environment: development
     outputs:
-       variable: ${{ steps.tag.outputs.tag }}
+       variable: ${{ steps.tag.outputs.image_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,7 +42,7 @@ jobs:
 
       - name: Create a output variable
         id: tag
-        run: echo "tag=${{ steps.create_tag.outputs.full_image_tags }}" >> $GITHUB_OUTPUT 
+        run: echo "image_name=${{ steps.create_tag.outputs.full_image_tags }}" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -56,3 +55,6 @@ jobs:
 
       - name: Push Docker image to DockerHub
         run: docker push ${{ steps.create_tag.outputs.full_image_tags }}
+      
+      - name: echo output
+        run: echo ${{ steps.tag.outputs.image_name }}
