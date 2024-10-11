@@ -15,7 +15,7 @@ jobs:
 
     secrets: inherit
   use-output:
-    needs: call-reusable-workflow
+    needs: CI
     runs-on: ubuntu-latest
     steps:
       - name: Mostrar el output del workflow reutilizable
