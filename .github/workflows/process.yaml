@@ -14,10 +14,16 @@ jobs:
     uses: ./.github/workflows/CI.yaml
     secrets: inherit
 
-        
   CD:
     needs: CI
     uses: ./.github/workflows/CD.yml
     with:
-      image_name: ${{needs.CI.outputs.image_name}}
+      image_name: ${{ needs.CI.outputs.image_name }}
     secrets: inherit
+
+  Echo_Output:
+    needs: CD
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo image_name
+        run:  ${{ needs.CI.outputs.image_name }}"
