@@ -16,9 +16,9 @@ jobs:
     id: entorno
     run: |
      if [github.ref == 'refs/heads/main']; then
-      echo ENTORNO="producción" >> GITHUB_ENV
+      echo ENTORNO="production" >> GITHUB_ENV
       echo "entorno=$ENTORNO" >> GITHUB_OUTPUT
      elif [github.ref == 'refs/heads/development']; then
-      echo ENTORNO="UAT" >> GITHUB_ENV
+      echo ENTORNO="development" >> GITHUB_ENV
       echo "entorno=$ENTORNO" >> GITHUB_OUTPUT
      fi
