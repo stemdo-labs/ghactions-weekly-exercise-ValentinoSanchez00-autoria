@@ -60,4 +60,4 @@ jobs:
         run: docker build -t ${{ steps.create_tag.outputs.full_image_tags }} .
 
       - name: Push Docker image to DockerHub
-        run: docker push ${{ env.full_image_tags }}
+        run: docker push ${{ steps.create_tag.outputs.full_image_tags }}
