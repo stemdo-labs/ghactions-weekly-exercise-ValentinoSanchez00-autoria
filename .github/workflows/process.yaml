@@ -26,4 +26,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo image_name
-        run:  ${{ needs.CI.outputs.image_name }}"
+        run: echo "${{ needs.CI.outputs.image_name }}"
