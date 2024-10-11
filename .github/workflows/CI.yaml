@@ -1,14 +1,30 @@
 name: CI
-on:
+on:  
   workflow_call:
+    inputs:
+      entorno:
+        required: true
+        type: string
     outputs: 
       image_name: 
         value: ${{ jobs.ci.outputs.image_name }}
 
-jobs:   
-  ci:
+jobs: 
+  ci_test:
+    environment: ${{ inputs.entorno }}
     runs-on: ubuntu-latest
-    environment: development
+    steps:
+      - name: Test 10 seconds
+        run: |
+          echo "EJECUTANDO TEST"
+          sleep 10
+      - name: Echo image_name
+        run: |
+          echo "FUNCIONA TODO PASAMOS A CD prueba"  
+  ci:
+    needs: ci_test
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.entorno }}
     outputs:
        image_name: ${{ steps.tag.outputs.image_name }}
     steps:
@@ -60,11 +76,5 @@ jobs:
       
       - name: Echo output
         run: echo ${{ steps.tag.outputs.image_name }}
-  ci_test:
-    needs: ci
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo image_name
-        run: |
-          echo "${{ needs.ci.outputs.image_name }}"
-          echo "FUNCIONA TODO PASAMOS A CD prueba"
+  
+     

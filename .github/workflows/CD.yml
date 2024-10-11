@@ -1,19 +1,17 @@
 name: CD
 on:
- push:
-  branches:
-    - main
-  paths:
-    - '**'
  workflow_call:
-    inputs:
-      image_name:
-        required: true
-        type: string
+  inputs:
+   image_name_ci:
+    required: true
+    type: string
+   entorno:
+    type: string
+    required: true
 jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{inputs.entorno}}
 
     steps:
       - name: image_name echo
@@ -26,10 +24,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
       - name: Pull Dockerfile sin ${{ inputs.image_name }}
         run: |
-         docker pull vsanchez33/sample-angular-app:0.0.1
+         docker pull ${{ inputs.image_name }}
       - name: Run Docker container ${{ inputs.image_name }}
         run: |
-          docker run -d --name angular_aplication -p 80:8080 vsanchez33/sample-angular-app:0.0.1
+          docker run -d --name angular_aplication -p 80:8080 ${{ inputs.image_name }}
 
       - name: Wait 30 seconds for container to start 
         run: sleep 30
