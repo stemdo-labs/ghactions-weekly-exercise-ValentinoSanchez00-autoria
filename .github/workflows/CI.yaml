@@ -1,6 +1,7 @@
 name: CI
 on:
   workflow_call:
+    outputs: ${{ jobs.job1.outputs.tag }}
       
     
 jobs:
@@ -18,7 +19,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      full_image_tags: ${{ steps.vars.outputs.full_image_tags }}
+      tag: ${{ steps.tag.outputs.tag }}
     needs: build
     environment: development
     steps:
@@ -44,9 +45,9 @@ jobs:
          echo " ${{ env.full_image_tags }}"
       
       - name: Create a output variable
-        id: vars
+        id: tag
         run: |
-          echo "full_image_tags=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT
+          echo "tag=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT
       
 
       - name: Login to DockerHub

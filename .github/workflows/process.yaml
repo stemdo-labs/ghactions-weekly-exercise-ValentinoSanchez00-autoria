@@ -14,15 +14,10 @@ jobs:
     uses: ./.github/workflows/CI.yaml
 
     secrets: inherit
-  use-output:
-    needs: CI
-    runs-on: ubuntu-latest
-    steps:
-      - name: Mostrar el output del workflow reutilizable
-        run: echo " ${{ needs.CI.outputs.full_image_tags }} "
+ 
   CD:
     needs: CI
     uses: ./.github/workflows/CD.yml
     with:
-      image_name: ${{ needs.CI.outputs.full_image_tags  }}
+      image_name: ${{ needs.CI.outputs.tag  }}
     secrets: inherit
