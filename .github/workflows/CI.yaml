@@ -1,10 +1,6 @@
 name: CI
 on:  
   workflow_call:
-    inputs:
-      entorno:
-        required: true
-        type: string
     outputs: 
       image_name: 
         value: ${{ jobs.ci.outputs.image_name }}
