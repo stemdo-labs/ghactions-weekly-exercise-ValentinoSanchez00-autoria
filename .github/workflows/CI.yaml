@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_call:
     outputs: 
-      image_nameW: 
+      image_name: 
         value: ${{ jobs.ci.outputs.variable }}
 
 jobs:   
