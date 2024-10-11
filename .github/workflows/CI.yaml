@@ -40,8 +40,9 @@ jobs:
 
       - name: Set output full_image_tags
         id: set_output_image_tags
-        run: echo "::set-output name=full_image_tags::${{ env.full_image_tags }}"
-
+        run: echo "${{ env.full_image_tags }}" > full_image_tags.txt
+      - name: Save full_image_tags to environment file
+        run: echo "full_image_tags=${{ env.full_image_tags }}" >> $GITHUB_ENV
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:

@@ -13,10 +13,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
       - name: Pull Dockerfile
         run: |
-         docker pull ${{ needs.CI.outputs.image_tags }}
+         docker pull ${{ env.full_image_tags }}
       - name: Run Docker container
         run: |
-          docker run -d --name angular_aplication -p 80:8080 ${{ needs.CI.outputs.image_tags }}
+          docker run -d --name angular_aplication -p 80:8080 ${{ env.full_image_tags }}
 
       - name: Wait 30 seconds for container to start 
         run: sleep 30
