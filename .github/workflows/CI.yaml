@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_call:
     outputs: 
-      tag: 
+      image_nameW: 
         value: ${{ jobs.ci.outputs.variable }}
 
 jobs:   
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     outputs:
-       image_name: ${{ steps.tag.outputs.image_name }}
+       variable: ${{ steps.tag.outputs.image_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -57,4 +57,4 @@ jobs:
         run: docker push ${{ steps.create_tag.outputs.full_image_tags }}
       
       - name: echo output
-        run: echo ${{ steps.tag.outputs.image_name }}
+        run: echo ${{steps.tag.outputs.image_name}}
