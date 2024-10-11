@@ -2,7 +2,7 @@ name: CD
 on:
  workflow_call:
   inputs:
-   image_name_ci:
+   image_name:
     required: true
     type: string
    entorno:
