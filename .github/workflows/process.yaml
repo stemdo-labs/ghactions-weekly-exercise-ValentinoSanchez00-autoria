@@ -19,5 +19,5 @@ jobs:
     needs: CI
     uses: ./.github/workflows/CD.yml
     with:
-      image_name: ${{ needs.CI.outputs.tag  }}
+      image_name: ${{needs.CI.outputs.image_name}}
     secrets: inherit
