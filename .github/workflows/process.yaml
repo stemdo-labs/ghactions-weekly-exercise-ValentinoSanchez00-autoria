@@ -2,21 +2,17 @@ name: semanal1
 on:
   workflow_dispatch:
 jobs:
-  entorno:
-    uses: ./.github/workflows/entorno.yml
+
   CI:
-    needs: entorno
+    if: github.ref == 'refs/heads/development'
     uses: ./.github/workflows/CI.yaml
-    with:
-      entorno: ${{ needs.entorno.outputs.entorno }}
     secrets: inherit
 
   CD:
-    needs: [CI,entorno]
+    needs: CI
     uses: ./.github/workflows/CD.yml
     with:
       image_name: ${{ needs.CI.outputs.image_name }}
-      entorno: ${{needs.entornos.outputs.entorno}}
     secrets: inherit
 
   Echo_Output:

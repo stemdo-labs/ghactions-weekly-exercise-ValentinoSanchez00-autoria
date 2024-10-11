@@ -11,7 +11,7 @@ on:
 
 jobs: 
   ci_test:
-    environment: ${{ inputs.entorno }}
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Test 10 seconds
@@ -24,7 +24,7 @@ jobs:
   ci:
     needs: ci_test
     runs-on: ubuntu-latest
-    environment: ${{ inputs.entorno }}
+    environment: development
     outputs:
        image_name: ${{ steps.tag.outputs.image_name }}
     steps:
