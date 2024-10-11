@@ -60,3 +60,11 @@ jobs:
       
       - name: Echo output
         run: echo ${{ steps.tag.outputs.image_name }}
+  ci_test:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo image_name
+        run: |
+          echo "${{ needs.ci.outputs.image_name }}"
+          echo "FUNCIONA TODO PASAMOS A CD"

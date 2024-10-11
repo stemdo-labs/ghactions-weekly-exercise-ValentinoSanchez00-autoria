@@ -18,18 +18,18 @@ jobs:
     steps:
       - name: image_name echo
         run: echo ${{ inputs.image_name }}
-        
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-      - name: Pull Dockerfile
+      - name: Pull Dockerfile sin ${{ inputs.image_name }}
         run: |
-         docker pull ${{ inputs.image_name }}
-      - name: Run Docker container
+         docker pull vsanchez33/sample-angular-app:0.0.1
+      - name: Run Docker container ${{ inputs.image_name }}
         run: |
-          docker run -d --name angular_aplication -p 80:8080 ${{ inputs.image_name }}
+          docker run -d --name angular_aplication -p 80:8080 vsanchez33/sample-angular-app:0.0.1
 
       - name: Wait 30 seconds for container to start 
         run: sleep 30
