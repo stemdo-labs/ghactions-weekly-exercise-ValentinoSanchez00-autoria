@@ -8,13 +8,15 @@ inputs:
   version:
     description: "Version tag for the Docker image"
     required: true
-
+  docker_username:
+    description: "DockerHub username"
+    required: true
 runs:
   using: "composite"
   steps:
     - name: Generate full image tags
       id: generate_full_image_tags
       run: |
-        full_tags="${{ secrets.USERNAME }}/${{ inputs.image_name }}:${{ inputs.version }}"
+        full_tags="${{ inputs.docker_username }}/${{ inputs.image_name }}:${{ inputs.version }}"
         echo "full_image_tags=$full_tags" >> $GITHUB_ENV  
       shell: bash
