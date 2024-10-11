@@ -1,7 +1,8 @@
 name: CI
 on:
   workflow_call:
-    outputs: ${{ jobs.job1.outputs.tag }}
+    outputs: 
+      tag: ${{ jobs.job1.outputs.tag }}
       
     
 jobs:
