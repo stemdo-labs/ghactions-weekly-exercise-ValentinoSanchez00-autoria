@@ -22,7 +22,7 @@ jobs:
     secrets: inherit
 
   Echo_Output:
-    needs: CD
+    needs: CI
     runs-on: ubuntu-latest
     steps:
       - name: Echo image_name
