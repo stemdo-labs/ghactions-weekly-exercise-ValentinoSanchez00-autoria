@@ -1,10 +1,16 @@
 name: CD
 on:
+ push:
+  branches:
+    - main
+  paths:
+    - '**'
  workflow_call:
 jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
     environment: production
+
     steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -13,10 +19,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
       - name: Pull Dockerfile
         run: |
-         docker pull ${{ env.full_image_tags }}
+         docker pull vsanchezr33/sample-angular-app:0.0.1
       - name: Run Docker container
         run: |
-          docker run -d --name angular_aplication -p 80:8080 ${{ env.full_image_tags }}
+          docker run -d --name angular_aplication -p 80:8080 vsanchezr33/sample-angular-app:0.0.1
 
       - name: Wait 30 seconds for container to start 
         run: sleep 30
