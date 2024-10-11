@@ -12,8 +12,17 @@ jobs:
   CI:
     if: github.ref == 'refs/heads/development'
     uses: ./.github/workflows/CI.yaml
+
     secrets: inherit
+  use-output:
+    needs: call-reusable-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar el output del workflow reutilizable
+        run: echo " ${{ needs.call-reusable-workflow.outputs.full_image_tags }}"
   CD:
     needs: CI
     uses: ./.github/workflows/CD.yml
+    with:
+      image_name: ${{ needs.call-reusable-workflow.outputs.full_image_tags }}
     secrets: inherit

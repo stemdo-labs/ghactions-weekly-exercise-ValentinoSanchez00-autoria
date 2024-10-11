@@ -1,6 +1,7 @@
 name: CI
 on:
   workflow_call:
+      
     
 jobs:
   build:
@@ -16,6 +17,8 @@ jobs:
 
   job1:
     runs-on: ubuntu-latest
+    outputs:
+      full_image_tags: ${{ steps.vars.outputs.full_image_tags }}
     needs: build
     environment: development
     steps:
@@ -39,6 +42,11 @@ jobs:
       - name: Echo full image tags from action
         run: |
          echo " ${{ env.full_image_tags }}"
+      
+      - name: Create a output variable
+        id: vars
+        run: |
+          echo "full_image_tags=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT
       
 
       - name: Login to DockerHub
