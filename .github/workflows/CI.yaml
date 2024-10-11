@@ -22,17 +22,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Coger variables de package.json
+        run: |
+              VERSION=$(node -p "require('./package.json').version")
+              NAME=$(node -p "require('./package.json').name")
+              echo "VERSION=$VERSION" >> $GITHUB_ENV
+              echo "NAME=$NAME" >> $GITHUB_ENV
       - name: crear tag
         uses: ./.github/actions/actiondockerpush
-        
+        with:
+          image_name: '${{ env.NAME }}'
+          version: '${{ env.VERSION }}'
 
-      - name: Set output full_image_tags
-        id: set_output_image_tags
-        run: echo "::set-output name=full_image_tags::${{ env.full_image_tags }}"
-      
-      - name: Export output from job
-        if: success()
-        run: echo "${{ steps.set_output_image_tags.outputs.full_image_tags }}"
+      - name: Echo full image tags from action
+        run: |
+         echo " ${{ env.full_image_tags }}"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -46,6 +50,3 @@ jobs:
           
       - name: Push Docker image to DockerHub
         run: docker push ${{ env.full_image_tags }}
-
-    outputs:
-      full_image_tags: ${{ steps.set_output_image_tags.outputs.full_image_tags }}
