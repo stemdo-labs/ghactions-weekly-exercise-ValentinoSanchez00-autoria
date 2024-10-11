@@ -1,10 +1,16 @@
 name: CD
 on:
+ push:
+  branches:
+    - main
+  paths:
+    - '**'
  workflow_call:
 jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
     environment: production
+
     steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v3

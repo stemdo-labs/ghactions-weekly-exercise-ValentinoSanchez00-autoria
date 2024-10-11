@@ -16,6 +16,8 @@ jobs:
 
   job1:
     runs-on: ubuntu-latest
+    outputs:
+      image_tags: ${{ env.full_image_tags }}
     needs: build
     environment: development
     steps:
@@ -36,11 +38,12 @@ jobs:
           docker_username: ${{ secrets.USERNAME }}
           docker_password: ${{ secrets.PASSWORD }}
 
-      - name: Echo full image tags from action
-        run: |
-         echo " ${{ env.full_image_tags }}"
-         echo " ${{ secrets.USERNAME }}"  
-         echo " ${{ secrets.PASSWORD }}"
+      - name: Set output full_image_tags
+        id: set_output_image_tags
+        run: echo "${{ env.full_image_tags }}" > full_image_tags.txt
+        
+      - name: Save full_image_tags to environment file
+        run: echo "full_image_tags=${{ env.full_image_tags }}" >> $GITHUB_ENV
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
