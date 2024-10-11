@@ -10,6 +10,7 @@ on:
       image_name:
         required: true
         type: string
+        default: 'vsanchezr33/sample-angular-app:0.0.1'
 jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
