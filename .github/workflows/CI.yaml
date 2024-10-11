@@ -43,11 +43,11 @@ jobs:
 
 
       - name: Echo full image tags from action
-        run: echo "${{ env.full_tags }}"
+        run: echo "${{ env.full_image_tags }}"
 
       - name: Create a output variable
         id: tag
-        run: echo "tag=${{ env.full_tags }}" >> $GITHUB_OUTPUT 
+        run: echo "tag=${{ env.full_image_tags }}" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
