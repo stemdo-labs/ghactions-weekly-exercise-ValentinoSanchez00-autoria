@@ -126,9 +126,6 @@ jobs:
   pull-DockerFiles:
     runs-on: ubuntu-latest
     environment: production
-    reviewers:
-        - ValentinoSanchez00
-
     steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -153,6 +150,8 @@ jobs:
         run: |
           curl -I http://localhost:80
 ````
+![image](https://github.com/user-attachments/assets/2870deae-9085-4277-ac9d-c90c04076532)
+
 # Flujo de Trabajo Principal (principal.yml)
 Finalmente, se creó un flujo de trabajo principal para integrar los workflows CI y CD, asegurando que los outputs del CI se pasen correctamente al CD.
 ## Flujo de Trabajo Principal:
