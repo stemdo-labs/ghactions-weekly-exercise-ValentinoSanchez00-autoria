@@ -75,26 +75,26 @@ jobs:
 
       - name: Build Docker image in main
         if: github.ref == 'refs/heads/main'
-        run: docker build -t ${{ steps.tagmain.outputs.image_name_main }} .
+        run: docker build -t ${{ steps.tagmain.outputs.image_name }} .
       
       - name: Build Docker image in develop
         if: github.ref == 'refs/heads/development'
-        run: docker build -t ${{ steps.tagdevelop.outputs.image_name_development }} .
+        run: docker build -t ${{ steps.tagdevelop.outputs.image_name }} .
 
       - name: Push Docker image to DockerHub main
         if: github.ref == 'refs/heads/main'
-        run: docker push ${{ steps.tagmain.outputs.image_name_main }}
+        run: docker push ${{ steps.tagmain.outputs.image_name }}
       
       - name: Push Docker image to DockerHub development
         if: github.ref == 'refs/heads/development'
-        run: docker push ${{ steps.tagdevelop.outputs.image_name_development }}
+        run: docker push ${{ steps.tagdevelop.outputs.image_name }}
       
       - name: Echo output main
         if: github.ref == 'refs/heads/main'
-        run: echo ${{ steps.tagmain.outputs.image_name_main }}
+        run: echo ${{ steps.tagmain.outputs.image_name }}
       
       - name: Echo output development
         if: github.ref == 'refs/heads/development'
-        run: echo ${{ steps.tagdevelop.outputs.development }}
+        run: echo ${{ steps.tagdevelop.outputs.image_name }}
   
      
