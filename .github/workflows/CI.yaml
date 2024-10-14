@@ -54,9 +54,15 @@ jobs:
       - name: Echo full image tags from action
         run: echo "${{ steps.create_tag.outputs.full_image_tags }}"
 
-      - name: Create output variable
+      - name: Create output variable in main
+        if: github.ref == 'refs/heads/main'
         id: tag
         run: echo "image_name=${{ steps.create_tag.outputs.full_image_tags }}" >> $GITHUB_OUTPUT 
+      
+      - name: Create output variable in main
+        if: github.ref == 'refs/heads/development'
+        id: tag
+        run: echo "image_name=${{ steps.create_tag.outputs.full_image_tags }} -snapshot" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
