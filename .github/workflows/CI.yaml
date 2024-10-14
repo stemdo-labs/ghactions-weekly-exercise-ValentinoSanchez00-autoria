@@ -74,9 +74,11 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Build Docker image in main
+        if: github.ref == 'refs/heads/main'
         run: docker build -t ${{ steps.tag.outputs.image_name_main }} .
       
       - name: Build Docker image in develop
+        if: github.ref == 'refs/heads/development'
         run: docker build -t ${{ steps.tag.outputs.image_name_development }} .
 
       - name: Push Docker image to DockerHub main
