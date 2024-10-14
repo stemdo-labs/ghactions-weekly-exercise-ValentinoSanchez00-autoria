@@ -73,15 +73,18 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
 
-      - name: Build Docker image
-        run: docker build -t ${{ steps.tag.outputs.image_name }} .
+      - name: Build Docker image in main
+        run: docker build -t ${{ steps.tag.outputs.image_name_main }} .
+      
+      - name: Build Docker image in develop
+        run: docker build -t ${{ steps.tag.outputs.image_name_development }} .
 
       - name: Push Docker image to DockerHub main
         if: github.ref == 'refs/heads/main'
         run: docker push ${{ steps.tag.outputs.image_name_main }}
       
       - name: Push Docker image to DockerHub development
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/development'
         run: docker push ${{ steps.tag.outputs.image_name_development }}
       
       - name: Echo output main
