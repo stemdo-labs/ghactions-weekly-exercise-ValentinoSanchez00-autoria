@@ -8,16 +8,19 @@ jobs:
     uses: ./.github/workflows/CI.yaml
     secrets: inherit
 
-  CD:
+  CD_DEVELOPMENT:
+    if: github.ref == 'refs/heads/development'
     needs: CI
     uses: ./.github/workflows/CD.yml
     with:
-      image_name: ${{ needs.CI.outputs.image_name }}
+      image_name: ${{ needs.CI.outputs.image_name_development }}
     secrets: inherit
 
-  Echo_Output:
+  CD_PRODUCTION:
+    if: github.ref == 'refs/heads/main'
     needs: CI
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo image_name
-        run: echo "${{ needs.CI.outputs.image_name }}"
+    uses: ./.github/workflows/CD.yml
+    with:
+      image_name: ${{ needs.CI.outputs.image_name_main }}
+    secrets: inherit
+
