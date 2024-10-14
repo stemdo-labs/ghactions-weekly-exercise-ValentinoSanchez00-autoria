@@ -2,8 +2,10 @@ name: CI
 on:  
   workflow_call:
     outputs: 
-      image_name: 
-        value: ${{ jobs.ci.outputs.image_name }}
+      image_name_main: 
+        value: ${{ jobs.ci.outputs.image_name_main }}
+      image_name_development: 
+        value: ${{ jobs.ci.outputs.image_name_development }}
 
 jobs: 
   ci_test:
@@ -22,7 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     outputs:
-       image_name: ${{ steps.tag.outputs.image_name }}
+       image_name_main: ${{ steps.tagmain.outputs.image_name }} 
+       image_name_development: ${{ steps.tagdevelop.outputs.image_name }} 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -56,12 +59,12 @@ jobs:
 
       - name: Create output variable in main
         if: github.ref == 'refs/heads/main'
-        id: tag
+        id: tagmain
         run: echo "image_name=${{ steps.create_tag.outputs.full_image_tags }}" >> $GITHUB_OUTPUT 
       
-      - name: Create output variable in main
+      - name: Create output variable in development
         if: github.ref == 'refs/heads/development'
-        id: tag
+        id: tagdevelop
         run: echo "image_name=${{ steps.create_tag.outputs.full_image_tags }} -snapshot" >> $GITHUB_OUTPUT 
 
       - name: Login to DockerHub
@@ -71,12 +74,22 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ steps.create_tag.outputs.full_image_tags }} .
+        run: docker build -t ${{ steps.tag.outputs.image_name }} .
 
-      - name: Push Docker image to DockerHub
-        run: docker push ${{ steps.create_tag.outputs.full_image_tags }}
+      - name: Push Docker image to DockerHub main
+        if: github.ref == 'refs/heads/main'
+        run: docker push ${{ steps.tag.outputs.image_name_main }}
       
-      - name: Echo output
-        run: echo ${{ steps.tag.outputs.image_name }}
+      - name: Push Docker image to DockerHub development
+        if: github.ref == 'refs/heads/main'
+        run: docker push ${{ steps.tag.outputs.image_name_development }}
+      
+      - name: Echo output main
+        if: github.ref == 'refs/heads/main'
+        run: echo ${{ steps.tag.outputs.image_name_main }}
+      
+      - name: Echo output development
+        if: github.ref == 'refs/heads/development'
+        run: echo ${{ steps.tag.outputs.development }}
   
      
